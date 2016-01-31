@@ -9,10 +9,10 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UICollectionViewDataSource {
 
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var networkErrorLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
     var movies: [NSDictionary]?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,11 +20,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "RefreshControlAction:", forControlEvents: .ValueChanged)
         
-        tableView.dataSource = self
-        tableView.delegate = self
         self.networkErrorLabel.hidden = true
         
-        tableView.addSubview(refreshControl)
+        collectionView.dataSource = self
+        collectionView.addSubview(refreshControl)
         RefreshControlAction(nil)
     }
 
@@ -32,8 +31,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let movies = movies {
             return movies.count
         } else {
@@ -41,17 +40,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell",forIndexPath: indexPath) as! MovieCell
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("posterCell",forIndexPath: indexPath) as! MovieViewCell
         let movie = movies![indexPath.row]
-        let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
         let posterPath = movie["poster_path"] as! String
         let baseURL = "https://image.tmdb.org/t/p/w342"
         let imageURL = NSURL(string: baseURL + posterPath)
-        
-        cell.title.text = title
-        cell.overviewLabel.text = overview
         cell.posterView.setImageWithURL(imageURL!)
         return cell
     }
@@ -90,7 +84,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             print("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
-                            self.tableView.reloadData()
+                            self.collectionView.reloadData()
                     }
                 } else {
                     self.networkErrorLabel.hidden = false

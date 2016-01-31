@@ -25,7 +25,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="302" height="109.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IHg-LN-f7q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IHg-LN-f7q" customClass="MovieCe">
                                                     <rect key="frame" x="77" y="0.0" width="235" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -46,23 +46,41 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="overviewLabel" destination="sXY-sX-mQG" id="4cp-py-C0e"/>
-                                            <outlet property="posterView" destination="xxR-FU-e4Z" id="4gM-AP-Slb"/>
-                                            <outlet property="title" destination="IHg-LN-f7q" id="UT4-ii-S6Y"/>
+                                            <outlet property="overviewLabel" destination="sXY-sX-mQG" id="plg-f9-HeO"/>
+                                            <outlet property="posterView" destination="xxR-FU-e4Z" id="sgR-Jz-9NP"/>
+                                            <outlet property="title" destination="IHg-LN-f7q" id="G8o-9t-C1C"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bQl-n2-DsQ">
+                                <rect key="frame" x="0.0" y="15" width="320" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.17020269281140984" green="0.15946054406080679" blue="0.24690261994949492" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="d4p-x4-YEg" appends="YES" id="ddK-uf-fKj"/>
+                                </connections>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="networkErrorLabel" destination="bQl-n2-DsQ" id="Q9Y-5J-4F5"/>
                         <outlet property="tableView" destination="DML-8N-jtR" id="kmn-y7-iuW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="d4p-x4-YEg">
+                    <connections>
+                        <action selector="onTapCallback:" destination="BYZ-38-t0r" id="OaF-WQ-uYj"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="130" y="296"/>
+            <point key="canvasLocation" x="94" y="109"/>
         </scene>
     </scenes>
 </document>

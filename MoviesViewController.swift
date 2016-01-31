@@ -11,6 +11,7 @@ import AFNetworking
 import MBProgressHUD
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var networkErrorLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var movies: [NSDictionary]?
     override func viewDidLoad() {
@@ -21,6 +22,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+        self.networkErrorLabel.hidden = true
+        
         tableView.addSubview(refreshControl)
         RefreshControlAction(nil)
     }
@@ -73,25 +76,32 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let task: NSURLSessionDataTask = session.dataTaskWithRequest(request,
             completionHandler: { (dataOrNil, response, error) in
                 
-                if (refreshControl == nil) {
+                if let refreshControl = refreshControl {
+                    refreshControl.endRefreshing()
+                } else {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                 }
                 
+                
+                
                 if let data = dataOrNil {
+                    self.networkErrorLabel.hidden = true
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
                             print("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.tableView.reloadData()
-                            if let refreshControl = refreshControl {
-                                refreshControl.endRefreshing()
-                            }
                     }
+                } else {
+                    self.networkErrorLabel.hidden = false
                 }
         })
         task.resume()
     }
     
+    @IBAction func onTapCallback(sender: UITapGestureRecognizer) {
+        RefreshControlAction(nil)
+    }
     /*
     // MARK: - Navigation
 

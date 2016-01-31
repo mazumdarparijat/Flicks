@@ -9,11 +9,13 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
-class MoviesViewController: UIViewController, UICollectionViewDataSource {
+class MoviesViewController: UIViewController, UICollectionViewDataSource, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var networkErrorLabel: UILabel!
     var movies: [NSDictionary]?
+    var filteredMovies : [NSDictionary]?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,6 +27,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource {
         collectionView.dataSource = self
         collectionView.addSubview(refreshControl)
         RefreshControlAction(nil)
+        
+        searchBar.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +37,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource {
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let movies = movies {
+        if let movies = filteredMovies {
             return movies.count
         } else {
             return 0
@@ -42,7 +46,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("posterCell",forIndexPath: indexPath) as! MovieViewCell
-        let movie = movies![indexPath.row]
+        let movie = filteredMovies![indexPath.row]
         let posterPath = movie["poster_path"] as! String
         let baseURL = "https://image.tmdb.org/t/p/w342"
         let imageURL = NSURL(string: baseURL + posterPath)
@@ -84,6 +88,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource {
                         data, options:[]) as? NSDictionary {
                             print("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.filteredMovies = self.movies
                             self.collectionView.reloadData()
                     }
                 } else {
@@ -96,6 +101,41 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource {
     @IBAction func onTapCallback(sender: UITapGestureRecognizer) {
         RefreshControlAction(nil)
     }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if (searchText.isEmpty) {
+            filteredMovies = movies
+        } else {
+            filteredMovies = movies?.filter({(dataItem : NSDictionary) -> Bool in
+                let title = dataItem["title"] as! String
+                if title.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil {
+                    return true
+                } else {
+                    return false
+                }
+            })
+        }
+        
+        collectionView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        filteredMovies = movies
+        searchBar.resignFirstResponder()
+        collectionView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    
     /*
     // MARK: - Navigation
 

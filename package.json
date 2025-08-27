@@ -1,0 +1,41 @@
+{
+  "name": "sf-traffic-monitor",
+  "version": "1.0.0",
+  "description": "A modern, interactive web application for visualizing traffic data across San Francisco",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "npx serve .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "traffic",
+    "san-francisco",
+    "mapping",
+    "leaflet",
+    "visualization",
+    "transportation"
+  ],
+  "author": "SF Traffic Monitor Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/sf-traffic-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/sf-traffic-monitor/issues"
+  },
+  "homepage": "https://github.com/yourusername/sf-traffic-monitor#readme",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

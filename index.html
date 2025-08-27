@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF Traffic Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-icon">🚗</span>
+                    SF Traffic Monitor
+                </h1>
+                <p class="subtitle">Real-time traffic visualization across San Francisco</p>
+            </div>
+            <div class="header-controls">
+                <button id="refreshBtn" class="btn btn-primary">
+                    <span class="btn-icon">🔄</span>
+                    Refresh Data
+                </button>
+                <select id="timeRange" class="select">
+                    <option value="1h">Last Hour</option>
+                    <option value="6h">Last 6 Hours</option>
+                    <option value="24h" selected>Last 24 Hours</option>
+                    <option value="7d">Last 7 Days</option>
+                </select>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="sidebar">
+                <div class="stats-panel">
+                    <h3>Traffic Statistics</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Average Speed</span>
+                        <span class="stat-value" id="avgSpeed">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Congestion Level</span>
+                        <span class="stat-value" id="congestionLevel">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Active Routes</span>
+                        <span class="stat-value" id="activeRoutes">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Updated</span>
+                        <span class="stat-value" id="lastUpdated">--</span>
+                    </div>
+                </div>
+
+                <div class="legend-panel">
+                    <h3>Traffic Legend</h3>
+                    <div class="legend-item">
+                        <span class="legend-color green"></span>
+                        <span>Free Flow (0-20% congestion)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color yellow"></span>
+                        <span>Moderate (20-60% congestion)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color orange"></span>
+                        <span>Heavy (60-80% congestion)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color red"></span>
+                        <span>Severe (80-100% congestion)</span>
+                    </div>
+                </div>
+
+                <div class="filters-panel">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label for="roadType">Road Type:</label>
+                        <select id="roadType" class="select">
+                            <option value="all">All Roads</option>
+                            <option value="highway">Highways</option>
+                            <option value="arterial">Arterial Roads</option>
+                            <option value="local">Local Streets</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="minSpeed">Min Speed (mph):</label>
+                        <input type="range" id="minSpeed" min="0" max="70" value="0" class="range">
+                        <span class="range-value" id="minSpeedValue">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-overlay">
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <div class="spinner"></div>
+                        <span>Loading traffic data...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SF Traffic Monitor. Data provided by SFMTA and OpenStreetMap.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
